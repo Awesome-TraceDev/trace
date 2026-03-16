@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace | The Intentional Reading Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdfcf9; /* Warm Oatmeal */
+            --card-bg: #f5f2ed;
+            --text-primary: #1e293b; /* Deep Slate */
+            --text-secondary: #475569;
+            --accent: #6366f1; /* Indigo/Accent */
+            --border: #e2e8f0;
+            --max-width: 800px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        /* --- Hero Section --- */
+        section.hero {
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            background-color: var(--text-primary);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover { transform: translateY(-2px); }
+
+        .hero-mockup {
+            width: 100%;
+            max-width: 400px;
+            height: 600px;
+            background: #e2e8f0;
+            border-radius: 32px;
+            margin-top: 60px;
+            border: 8px solid #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* --- The Problem Grid --- */
+        section.problem {
+            padding: 80px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .grid-item h3 { margin-bottom: 12px; font-size: 1.4rem; }
+        .grid-item p { font-size: 0.95rem; color: var(--text-secondary); }
+
+        /* --- Narrative Section --- */
+        section.narrative {
+            padding: 80px 0;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .journal-entry {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .journal-entry h2 { margin-bottom: 20px; font-style: italic; }
+
+        /* --- Feature Walkthrough --- */
+        section.features { padding: 80px 0; }
+
+        .feature-row {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        .screenshot-placeholder {
+            width: 100%;
+            background: #eee;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+
+        /* --- Feedback Loop --- */
+        section.feedback {
+            padding: 100px 0;
+            text-align: center;
+            background: #1e293b;
+            color: white;
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .feedback-form {
+            max-width: 500px;
+            margin: 40px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        input, textarea {
+            padding: 16px;
+            border-radius: 8px;
+            border: none;
+            font-family: inherit;
+        }
+
+        textarea { height: 120px; resize: none; }
+
+        .submit-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <section class="hero">
+            <h1>I’m building the tool I wish I had—and I’d love your help to get it right.</h1>
+            <p>A simple, privacy-first way to reclaim your focus. No ads, no tracking, just utility.</p>
+            <a href="#feedback" class="cta-button">Join the Inner Circle</a>
+            
+            <div class="hero-mockup">
+                [ Screenshot: Main Insight Dashboard ]
+            </div>
+        </section>
+
+        <section class="problem">
+            <h2 style="text-align:center;">The Modern Reading Struggle</h2>
+            <div class="grid">
+                <div class="grid-item">
+                    <h3>01. The Distraction Loop</h3>
+                    <p>Modern apps are designed to keep you scrolling, not reading. Your focus is sold to the highest bidder.</p>
+                </div>
+                <div class="grid-item">
+                    <h3>02. The Progress Void</h3>
+                    <p>It’s hard to stay motivated when you can't see how far you've come or when you'll reach the finish line.</p>
+                </div>
+                <div class="grid-item">
+                    <h3>03. The Feature Bloat</h3>
+                    <p>Most trackers are cluttered with social feeds and notifications you never asked for.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="narrative">
+            <div class="journal-entry">
+                <h2>A note from the developer.</h2>
+                <p>I’m a designer and a builder, but mostly, I’m a reader. I built this app because I was tired of tools that felt like digital chores or data-hungry corporations. I wanted a space that respected the quiet nature of reading while giving me the insights I needed to stay consistent.</p>
+            </div>
+
+            <div class="journal-entry">
+                <h2>Why I built this.</h2>
+                <p>We live in an era of infinite scrolls and 30-second clips. I found myself losing the ability to sit with a book for an hour without checking my phone. I wanted something different: Local-first, privacy-focused, and aesthetically calm.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-row">
+                <div class="screenshot-placeholder">
+                    [ Screenshot: The Horizon View ]
+                </div>
+                <div>
+                    <h3>Visualize the Horizon</h3>
+                    <p>Understand exactly when you'll finish your current book based on your real-world reading pace. No more guessing.</p>
+                </div>
+            </div>
+
+            <div class="feature-row">
+                <div class="screenshot-placeholder">
+                    [ Screenshot: Reading Heatmaps ]
+                </div>
+                <div>
+                    <h3>Know Your Rhythm</h3>
+                    <p>See your reading habits visualized. Discover your peak focus hours and protect them.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="feedback" id="feedback">
+            <h2>Help us build this.</h2>
+            <p>I'm looking for a small group of early testers to help shape the roadmap.</p>
+            
+            <form class="feedback-form">
+                <input type="email" placeholder="Your email address" required>
+                <textarea placeholder="What's the one thing missing from your current reading routine?"></textarea>
+                <button type="submit" class="submit-btn">Send My Feedback</button>
+            </form>
+        </section>
+
+        <footer>
+            <p>Built with intention by an independent developer. &copy; 2026</p>
+        </footer>
+    </div>
+
+</body>
+</html>
