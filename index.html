@@ -4,240 +4,419 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trace | The Intentional Reading Tracker</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #E8E9EA;      /* Exact light grey from image */
-            --text-main: #051441;    /* Exact deep navy from image */
-            --text-muted: #6B7280;
-            --white: #ffffff;
-            --max-width: 800px;
+            --bg:        #fdfcf9;
+            --card-bg:   #f5f2ed;
+            --navy:      #010226;
+            --accent:    #6366f1;
+            --text:      #1e293b;
+            --muted:     #475569;
+            --border:    #e2e8f0;
+            --max:       960px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Source Sans 3', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: var(--max-width);
-            width: 90%;
-            margin: 0 auto;
-        }
-
-        /* --- Header --- */
-        header {
-            padding: 60px 0 40px;
-            text-align: center;
-            width: 100%;
-        }
-
-        .brand-name {
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 0.3rem;
-            text-transform: uppercase;
-            display: inline-block;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 4px;
-        }
-
-        /* --- Hero --- */
-        section.hero {
-            padding: 40px 0 100px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 200;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            letter-spacing: -0.04em;
-        }
-
-        .hero p {
-            font-size: 1.4rem;
-            color: var(--text-main);
-            margin-bottom: 60px;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 300;
-        }
-
-        .hero-mockup {
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 40px 80px rgba(5, 20, 65, 0.1);
-        }
-
-        .hero-mockup img { width: 100%; display: block; }
-
-        /* --- Layout Sections --- */
-        section.content-block {
-            padding: 80px 0;
-            width: 100%;
-        }
-
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.2rem;
-            margin-bottom: 1.5rem;
-            display: block;
-            color: var(--text-main);
-        }
-
-        .narrative-text {
-            font-size: 1.75rem;
-            font-weight: 300;
-            line-height: 1.4;
-            max-width: 750px;
-        }
-
-        /* --- Features Grid --- */
-        .features-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            margin-top: 20px;
-        }
-
-        .feature-item h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .feature-item p {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            font-weight: 300;
-        }
-
-        /* --- Dark Feedback Box (Exact match to image footer) --- */
-        section.feedback {
-            width: 100%;
-            background: var(--text-main);
-            color: var(--white);
-            padding: 100px 0;
-            margin-top: 60px;
-            text-align: center;
-        }
-
-        .feedback h2 {
-            font-size: 2.5rem;
-            font-weight: 200;
-            margin-bottom: 20px;
+        h1, h2, h3 {
+            font-family: 'Source Serif 4', serif;
             letter-spacing: -0.02em;
         }
 
-        .feedback p {
-            font-size: 1.1rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            opacity: 0.8;
+        .wrap {
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 0 32px;
         }
 
-        .btn-feedback {
+        /* ── Hero ───────────────────────────────────────────────── */
+        .hero {
+            padding: 72px 32px 64px;
+            max-width: var(--max);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-left h1 {
+            font-size: 2.4rem;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            color: var(--navy);
+        }
+
+        .hero-left p {
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 28px;
+            max-width: 380px;
+        }
+
+        .cta {
             display: inline-block;
-            background: var(--white);
-            color: var(--text-main);
-            padding: 16px 40px;
-            border-radius: 4px;
+            background: var(--navy);
+            color: #fff;
+            padding: 13px 28px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 700;
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1rem;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .cta:hover { opacity: 0.85; }
+
+        /* 2×2 screenshot grid */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .hero-grid .phone {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid var(--navy);
+            background: var(--navy);
+            box-shadow: 0 8px 24px rgba(1,2,38,0.18);
+        }
+
+        .hero-grid .phone img {
+            width: 100%;
+            display: block;
+        }
+
+        /* tall card spans 2 rows */
+        .hero-grid .phone.tall {
+            grid-row: span 2;
+        }
+
+        /* ── Problem ─────────────────────────────────────────────── */
+        .problem {
+            padding: 72px 32px;
+            border-top: 1px solid var(--border);
+            max-width: var(--max);
+            margin: 0 auto;
+        }
+
+        .problem h2 {
+            font-size: 1.7rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .problem-item h3 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        .problem-item p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* ── Features ────────────────────────────────────────────── */
+        .features {
+            padding: 72px 32px;
+            border-top: 1px solid var(--border);
+            max-width: var(--max);
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: 1.7rem;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* 4 phones in a row */
+        .phone-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            align-items: end;
+        }
+
+        .phone-card {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .phone-card .phone-frame {
+            border-radius: 22px;
+            overflow: hidden;
+            border: 5px solid var(--navy);
+            background: var(--navy);
+            box-shadow: 0 8px 24px rgba(1,2,38,0.15);
+        }
+
+        /* alternate heights for rhythm — like penpot design */
+        .phone-card:nth-child(2) .phone-frame,
+        .phone-card:nth-child(4) .phone-frame {
+            margin-top: 24px;
+        }
+
+        .phone-card .phone-frame img {
+            width: 100%;
+            display: block;
+        }
+
+        .phone-card h3 {
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .phone-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── Narrative ───────────────────────────────────────────── */
+        .narrative {
+            padding: 72px 32px;
+            border-top: 1px solid var(--border);
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .narrative h2 {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .narrative p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        /* ── Footer CTA ──────────────────────────────────────────── */
+        .footer-cta {
+            background: var(--navy);
+            padding: 80px 32px;
+            text-align: center;
+        }
+
+        .footer-cta h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .footer-cta p {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+        }
+
+        .feedback-form {
+            max-width: 440px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feedback-form input,
+        .feedback-form textarea {
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.07);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .feedback-form input::placeholder,
+        .feedback-form textarea::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+
+        .feedback-form textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .feedback-form button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
             transition: opacity 0.2s;
         }
 
-        .btn-feedback:hover { opacity: 0.9; }
+        .feedback-form button:hover { opacity: 0.85; }
 
         footer {
-            padding: 60px 0;
+            padding: 28px 32px;
             text-align: center;
-            font-size: 0.8rem;
-            font-weight: 400;
-            letter-spacing: 0.05rem;
-            opacity: 0.6;
+            font-size: 0.78rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
         }
 
-        /* Responsive Mobile Layout */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .narrative-text { font-size: 1.4rem; }
-            .features-row { grid-template-columns: 1fr; gap: 40px; }
-            .hero p { font-size: 1.1rem; }
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 720px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .phone-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero-left h1 { font-size: 1.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .phone-row {
+                grid-template-columns: 1fr 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand-name">Trace</div>
-    </header>
-
-    <div class="container">
-        <section class="hero">
-            <h1>A space for intentional reading.</h1>
-            <p>Reclaim your focus and see your journey through to the final page with a privacy-first, local-only companion.</p>
-            
-            <div class="hero-mockup">
-                <img src="hero.png" alt="Trace Dashboard Screenshot">
-            </div>
-        </section>
-
-        <section class="content-block">
-            <span class="section-label">A note from the creator</span>
-            <div class="narrative-text">
-                "I’m a reader who decided to build the tool I couldn't find. I was tired of tools that felt like digital chores. I wanted something that respected the quiet nature of reading while giving me the insights I needed to stay consistent."
-            </div>
-        </section>
-
-        <section class="content-block">
-            <span class="section-label">The Philosophy</span>
-            <div class="features-row">
-                <div class="feature-item">
-                    <h3>Local-First</h3>
-                    <p>Your data never leaves your device. No accounts, no cloud, no trackers. Just your books and your progress.</p>
-                </div>
-                <div class="feature-item">
-                    <h3>The Horizon</h3>
-                    <p>Visualize your progress clearly. We use your real reading behavior to project finish dates and keep the finish line in sight.</p>
-                </div>
-            </div>
-        </section>
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<section class="hero">
+    <div class="hero-left">
+        <h1>I'm building the tool I wish I had and I'd love your help to get it right.</h1>
+        <p>A simple, privacy-first app to reclaim your focus. No ads, no tracking, just utility.</p>
+        <a href="#feedback" class="cta">Join the Inner Circle</a>
     </div>
+    <div class="hero-grid">
+        <!-- tall left card -->
+        <div class="phone tall">
+            <img src="focus.png" alt="Focus session" />
+        </div>
+        <!-- two stacked on the right -->
+        <div class="phone">
+            <img src="hero.png" alt="Home screen" />
+        </div>
+        <div class="phone">
+            <img src="insight.png" alt="Insight screen" />
+        </div>
+    </div>
+</section>
 
-    <section class="feedback" id="feedback">
-        <div class="container">
-            <h2>Help me build this.</h2>
-            <p>I'm looking for a small group of early testers to help shape the roadmap.</p>
-            <a href="mailto:your-email@example.com" class="btn-feedback">Send My Feedback</a>
+<!-- ── Problem ───────────────────────────────────────────────────── -->
+<div class="wrap">
+    <section class="problem">
+        <h2>The Modern Reading Struggle</h2>
+        <div class="problem-grid">
+            <div class="problem-item">
+                <h3>01. The Distraction Loop</h3>
+                <p>Modern apps are designed to keep you scrolling, not reading. Your focus is sold to the highest bidder.</p>
+            </div>
+            <div class="problem-item">
+                <h3>02. The Progress Void</h3>
+                <p>It's hard to stay motivated when you can't see how far you've come or when you'll reach the finish line.</p>
+            </div>
+            <div class="problem-item">
+                <h3>03. The Feature Bloat</h3>
+                <p>Most trackers are cluttered with social feeds and notifications you never asked for.</p>
+            </div>
         </div>
     </section>
+</div>
 
-    <footer>
-        Built with intention by Awesome-TraceDev. © 2026
-    </footer>
+<!-- ── Features ─────────────────────────────────────────────────── -->
+<div class="wrap">
+    <section class="features">
+        <h2>Built around how you actually read</h2>
+        <div class="phone-row">
+
+            <div class="phone-card">
+                <div class="phone-frame">
+                    <img src="hero.png" alt="Home screen" />
+                </div>
+                <h3>Your library at a glance</h3>
+                <p>Every active book with real progress. Pick up exactly where you left off.</p>
+            </div>
+
+            <div class="phone-card">
+                <div class="phone-frame">
+                    <img src="continue-reading.png" alt="Continue reading" />
+                </div>
+                <h3>Sessions that hold you accountable</h3>
+                <p>One tap to start. Notifications muted. Nothing between you and the page.</p>
+            </div>
+
+            <div class="phone-card">
+                <div class="phone-frame">
+                    <img src="focus.png" alt="Focus timer" />
+                </div>
+                <h3>A distraction-free timer</h3>
+                <p>Set a page goal or go open-ended. The timer stays on screen and keeps you honest.</p>
+            </div>
+
+            <div class="phone-card">
+                <div class="phone-frame">
+                    <img src="log-page.png" alt="Log session" />
+                </div>
+                <h3>Log what mattered</h3>
+                <p>Record your page, a note, and how it felt. Scan a passage. Build your reading record.</p>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<!-- ── Narrative ─────────────────────────────────────────────────── -->
+<div class="wrap">
+    <section class="narrative">
+        <h2>A note from the developer.</h2>
+        <p>I'm a designer and a builder, but mostly, I'm a reader. I built this app because I was tired of tools that felt like digital chores or data-hungry corporations. I wanted a space that respected the quiet nature of reading while giving me the insights I needed to stay consistent.</p>
+        <p>We live in an era of infinite scrolls and 30-second clips. I found myself losing the ability to sit with a book for an hour without checking my phone. I wanted something different: local-first, privacy-focused, and aesthetically calm.</p>
+    </section>
+</div>
+
+<!-- ── Footer CTA ────────────────────────────────────────────────── -->
+<section class="footer-cta" id="feedback">
+    <h2>Help me build this.</h2>
+    <p>I'm looking for a small group of early testers to help shape the roadmap.</p>
+    <form class="feedback-form">
+        <input type="email" placeholder="Your email address" required />
+        <textarea placeholder="What's the one thing missing from your current reading routine?"></textarea>
+        <button type="submit">Send My Feedback</button>
+    </form>
+</section>
+
+<footer>
+    <p>Built with intention by an independent developer. &copy; 2026</p>
+</footer>
 
 </body>
 </html>
