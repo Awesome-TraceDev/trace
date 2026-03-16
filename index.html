@@ -4,218 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trace | The Intentional Reading Tracker</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* FONTS FROM YOUR DESIGN */
-        @font-face {
-            font-family: 'sourcesanspro';
-            src: url(https://design.penpot.app/fonts/sourcesanspro-regular.woff) format('woff');
-            font-weight: 400;
-        }
-        @font-face {
-            font-family: 'sourcesanspro';
-            src: url(https://design.penpot.app/fonts/sourcesanspro-extralight.woff) format('woff');
-            font-weight: 200;
+        :root {
+            --bg-color: #E8E9EA;      /* Exact light grey from image */
+            --text-main: #051441;    /* Exact deep navy from image */
+            --text-muted: #6B7280;
+            --white: #ffffff;
+            --max-width: 800px;
         }
 
-        :root {
-            --bg-color: #E8E9EA;      /* The light grey from your image */
-            --text-main: #051441;    /* The deep navy from your image */
-            --text-muted: #6B7280;
-            --accent-border: #B1B2B5; /* The mid-tone grey from your image */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            font-family: 'Source Sans 3', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'sourcesanspro', sans-serif;
-            margin: 0;
-            line-height: 1.6;
+            line-height: 1.5;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        header {
-            padding: 4rem 1rem 2rem;
-            text-align: center;
-        }
-
-        .brand {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: 0.2rem;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 0.5rem;
-        }
-
-        main {
-            max-width: 800px;
+        .container {
+            max-width: var(--max-width);
             width: 90%;
-            padding: 2rem 0;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 200; /* Extra light for that modern look */
-            margin-bottom: 1rem;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 600px;
             margin: 0 auto;
         }
 
-        /* SCREENSHOT PLACEHOLDER */
-        .app-preview {
-            background: #ffffff;
-            border: 1px solid var(--accent-border);
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 20px 40px rgba(5, 20, 65, 0.05);
-            margin-bottom: 6rem;
-        }
-
-        .app-preview img {
+        /* --- Header --- */
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
             width: 100%;
-            border-radius: 8px;
-            display: block;
         }
 
-        /* CONTENT SECTIONS */
-        .section {
-            margin-bottom: 5rem;
+        .brand-name {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.3rem;
+            text-transform: uppercase;
+            display: inline-block;
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 4px;
+        }
+
+        /* --- Hero --- */
+        section.hero {
+            padding: 40px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 200;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 60px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        .hero-mockup {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(5, 20, 65, 0.1);
+        }
+
+        .hero-mockup img { width: 100%; display: block; }
+
+        /* --- Layout Sections --- */
+        section.content-block {
+            padding: 80px 0;
+            width: 100%;
         }
 
         .section-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1rem;
+            letter-spacing: 0.2rem;
             margin-bottom: 1.5rem;
             display: block;
-            color: var(--text-muted);
+            color: var(--text-main);
         }
 
-        .narrative {
-            font-size: 1.4rem;
-            font-weight: 400;
-            line-height: 1.5;
+        .narrative-text {
+            font-size: 1.75rem;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 750px;
         }
 
-        .features-grid {
+        /* --- Features Grid --- */
+        .features-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 80px;
+            margin-top: 20px;
         }
 
-        .feature h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+        .feature-item h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
         }
 
-        .feature p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        /* CTA BOX */
-        .feedback-box {
-            background: var(--text-main);
-            color: #ffffff;
-            padding: 3rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        .feedback-box h2 {
-            font-weight: 200;
-            margin-top: 0;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #ffffff;
+        .feature-item p {
+            font-size: 1.1rem;
             color: var(--text-main);
-            padding: 1rem 2rem;
-            border-radius: 6px;
+            font-weight: 300;
+        }
+
+        /* --- Dark Feedback Box (Exact match to image footer) --- */
+        section.feedback {
+            width: 100%;
+            background: var(--text-main);
+            color: var(--white);
+            padding: 100px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .feedback h2 {
+            font-size: 2.5rem;
+            font-weight: 200;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .feedback p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .btn-feedback {
+            display: inline-block;
+            background: var(--white);
+            color: var(--text-main);
+            padding: 16px 40px;
+            border-radius: 4px;
             text-decoration: none;
             font-weight: 700;
-            margin-top: 1.5rem;
-            transition: transform 0.2s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            transition: opacity 0.2s;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-        }
+        .btn-feedback:hover { opacity: 0.9; }
 
         footer {
-            padding: 4rem 1rem;
+            padding: 60px 0;
             text-align: center;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.05rem;
+            opacity: 0.6;
         }
 
-        /* MOBILE FIXES */
-        @media (max-width: 600px) {
-            .features-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.2rem; }
+        /* Responsive Mobile Layout */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .narrative-text { font-size: 1.4rem; }
+            .features-row { grid-template-columns: 1fr; gap: 40px; }
+            .hero p { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <span class="brand">Trace</span>
+        <div class="brand-name">Trace</div>
     </header>
 
-    <main>
+    <div class="container">
         <section class="hero">
             <h1>A space for intentional reading.</h1>
             <p>Reclaim your focus and see your journey through to the final page with a privacy-first, local-only companion.</p>
+            
+            <div class="hero-mockup">
+                <img src="hero.png" alt="Trace Dashboard Screenshot">
+            </div>
         </section>
 
-        <section class="app-preview">
-            <img src="hero.png" alt="Trace App Dashboard Preview">
-        </section>
-
-        <section class="section">
+        <section class="content-block">
             <span class="section-label">A note from the creator</span>
-            <div class="narrative">
+            <div class="narrative-text">
                 "I’m a reader who decided to build the tool I couldn't find. I was tired of tools that felt like digital chores. I wanted something that respected the quiet nature of reading while giving me the insights I needed to stay consistent."
             </div>
         </section>
 
-        <section class="section">
+        <section class="content-block">
             <span class="section-label">The Philosophy</span>
-            <div class="features-grid">
-                <div class="feature">
+            <div class="features-row">
+                <div class="feature-item">
                     <h3>Local-First</h3>
-                    <p>Your data never leaves your device. No accounts, no cloud, no trackers. Just your books.</p>
+                    <p>Your data never leaves your device. No accounts, no cloud, no trackers. Just your books and your progress.</p>
                 </div>
-                <div class="feature">
+                <div class="feature-item">
                     <h3>The Horizon</h3>
-                    <p>Visualize your progress clearly so you never lose momentum on the path to the finish line.</p>
+                    <p>Visualize your progress clearly. We use your real reading behavior to project finish dates and keep the finish line in sight.</p>
                 </div>
             </div>
         </section>
+    </div>
 
-        <section class="feedback-box">
+    <section class="feedback" id="feedback">
+        <div class="container">
             <h2>Help me build this.</h2>
-            <p>I'm looking for a small group of early testers to help shape the roadmap. Want to try Trace?</p>
-            <a href="mailto:your-email@example.com" class="btn">Send My Feedback</a>
-        </section>
-    </main>
+            <p>I'm looking for a small group of early testers to help shape the roadmap.</p>
+            <a href="mailto:your-email@example.com" class="btn-feedback">Send My Feedback</a>
+        </div>
+    </section>
 
     <footer>
         Built with intention by Awesome-TraceDev. © 2026
