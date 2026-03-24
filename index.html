@@ -82,7 +82,7 @@
     /* ── Nav ── */
     nav {
       width: 100%;
-      max-width: 680px;
+      max-width: 900px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -108,12 +108,20 @@
       text-transform: uppercase;
     }
 
-    /* ── Hero ── */
-    .hero {
+    /* ── Hero + Mockup side by side ── */
+    .hero-section {
       width: 100%;
-      max-width: 680px;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      gap: 48px;
       padding-top: 72px;
-      padding-bottom: 56px;
+      padding-bottom: 64px;
+    }
+
+    .hero {
+      flex: 1;
+      min-width: 0;
     }
 
     .eyebrow {
@@ -230,11 +238,10 @@
     .success-msg.visible { display: flex; }
 
     /* ── Phone mockup ── */
-    .mockup-section {
-      width: 100%;
-      max-width: 680px;
-      margin: 16px 0 64px;
+    .mockup-side {
+      flex-shrink: 0;
       display: flex;
+      align-items: center;
       justify-content: center;
     }
 
@@ -395,7 +402,7 @@
     /* ── Features ── */
     .features {
       width: 100%;
-      max-width: 680px;
+      max-width: 900px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 12px;
@@ -436,7 +443,7 @@
     /* ── Platform note ── */
     .platform-note {
       width: 100%;
-      max-width: 680px;
+      max-width: 900px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -454,7 +461,7 @@
     /* ── Footer ── */
     footer {
       width: 100%;
-      max-width: 680px;
+      max-width: 900px;
       padding-top: 32px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -492,7 +499,9 @@
     .delay-5 { animation-delay: 0.65s; }
     .delay-6 { animation-delay: 0.8s; }
 
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
+      .hero-section { flex-direction: column; padding-top: 48px; padding-bottom: 40px; gap: 40px; }
+      .mockup-side { width: 100%; }
       .input-row { flex-direction: column; }
       button[type="submit"] { width: 100%; }
       .features { grid-template-columns: 1fr 1fr; }
@@ -512,64 +521,69 @@
     <span class="badge">Coming Soon</span>
   </nav>
 
-  <!-- Hero -->
-  <div class="hero">
-    <p class="eyebrow fade-up delay-1">Reading accountability</p>
-    <h1 class="fade-up delay-2">
-      Read more.<br/>
-      <em>No excuses.</em>
-    </h1>
-    <p class="sub fade-up delay-3">
-      Trace keeps you honest about your reading — real sessions, real pages, real progress. 
-      Your data stays on your device. No account. No subscription. No cloud.
-    </p>
+  <!-- Hero + Phone side by side -->
+  <div class="hero-section">
 
-    <div class="form-wrap fade-up delay-4">
-      <div class="input-row">
-        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
-        <button type="submit" onclick="handleSubmit()">Notify me</button>
+    <!-- Left: Hero text -->
+    <div class="hero">
+      <p class="eyebrow fade-up delay-1">Reading accountability</p>
+      <h1 class="fade-up delay-2">
+        Read more.<br/>
+        <em>No excuses.</em>
+      </h1>
+      <p class="sub fade-up delay-3">
+        Trace keeps you honest about your reading — real sessions, real pages, real progress. 
+        Your data stays on your device. No account. No subscription. No cloud.
+      </p>
+
+      <div class="form-wrap fade-up delay-4">
+        <div class="input-row">
+          <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
+          <button type="submit" onclick="handleSubmit()">Notify me</button>
+        </div>
+        <div class="success-msg" id="success-msg">
+          <span>✓</span> You're on the list. We'll reach out when Trace launches.
+        </div>
+        <p class="form-note">Android launching first. iOS to follow. No spam, ever.</p>
       </div>
-      <div class="success-msg" id="success-msg">
-        <span>✓</span> You're on the list. We'll reach out when Trace launches.
-      </div>
-      <p class="form-note">Android launching first. iOS to follow. No spam, ever.</p>
     </div>
-  </div>
 
-  <!-- Phone mockup -->
-  <div class="mockup-section fade-up delay-5">
-    <div class="phone">
-      <div class="phone-screen">
-        <div class="phone-header">Welcome</div>
-        <div class="phone-label">Continue Reading</div>
+    <!-- Right: Phone mockup -->
+    <div class="mockup-side fade-up delay-5">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-header">Welcome</div>
+          <div class="phone-label">Continue Reading</div>
 
-        <div class="phone-card">
-          <div class="phone-cover">📖</div>
-          <div class="phone-info">
-            <div class="phone-title">Atomic Habits</div>
-            <div class="phone-author">James Clear</div>
-            <div class="phone-pill">☀️ joyful</div>
-            <div style="font-size:7px;color:#4d6180;margin-top:2px;">Current page: <strong style="color:#8fa3c8;">101</strong></div>
-            <div class="phone-bar-wrap"><div class="phone-bar-fill"></div></div>
+          <div class="phone-card">
+            <div class="phone-cover">📖</div>
+            <div class="phone-info">
+              <div class="phone-title">Atomic Habits</div>
+              <div class="phone-author">James Clear</div>
+              <div class="phone-pill">☀️ joyful</div>
+              <div style="font-size:7px;color:#4d6180;margin-top:2px;">Current page: <strong style="color:#8fa3c8;">101</strong></div>
+              <div class="phone-bar-wrap"><div class="phone-bar-fill"></div></div>
+            </div>
+          </div>
+
+          <div class="phone-session">
+            <div style="font-size:7px;font-weight:600;color:#4d6180;">Last Session</div>
+            <div class="phone-chip">📅 Today</div>
+            <div class="phone-chip">⏱ 32 min</div>
+          </div>
+
+          <div class="phone-divider"></div>
+
+          <div class="phone-lib-label">Library</div>
+          <div class="phone-grid">
+            <div class="phone-thumb">📚</div>
+            <div class="phone-thumb">🗡️</div>
+            <div class="phone-thumb">🧠</div>
           </div>
         </div>
-
-        <div class="phone-session">
-          <div style="font-size:7px;font-weight:600;color:#4d6180;">Last Session</div>
-          <div class="phone-chip">📅 Today</div>
-          <div class="phone-chip">⏱ 32 min</div>
-        </div>
-
-        <div class="phone-divider"></div>
-
-        <div class="phone-lib-label">Library</div>
-        <div class="phone-grid">
-          <div class="phone-thumb">📚</div>
-          <div class="phone-thumb">🗡️</div>
-          <div class="phone-thumb">🧠</div>
-        </div>
       </div>
     </div>
+
   </div>
 
   <!-- Features -->
