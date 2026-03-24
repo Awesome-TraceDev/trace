@@ -1,416 +1,643 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trace — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-<title>Trace | Intentional Reading Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+    :root {
+      --navy:       #0f1724;
+      --navy-mid:   #182236;
+      --navy-card:  #1e2d45;
+      --accent:     #6b8cff;
+      --accent-dim: rgba(107,140,255,0.12);
+      --warm:       #f5c97a;
+      --text-1:     #f0f4ff;
+      --text-2:     #8fa3c8;
+      --text-3:     #4d6180;
+      --border:     rgba(107,140,255,0.15);
+    }
 
-<style>
+    html { scroll-behavior: smooth; }
 
-:root{
---bg:#f6f8fb;
---navy:#020327;
---accent:#6767fa;
---text:#1e293b;
---muted:#6b7280;
---border:#e4e7ec;
---max:1100px;
-}
+    body {
+      background-color: var(--navy);
+      color: var(--text-1);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
 
-body{
-font-family:Inter, sans-serif;
-background:var(--bg);
-color:var(--text);
-line-height:1.6;
-}
+    /* ── Ambient glow ── */
+    .glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(107,140,255,0.12) 0%, transparent 70%);
+      top: -200px; left: -100px;
+      animation: drift1 14s ease-in-out infinite alternate;
+    }
+    .glow-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(245,201,122,0.07) 0%, transparent 70%);
+      bottom: 0; right: -80px;
+      animation: drift2 18s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { to { transform: translate(40px, 60px); } }
+    @keyframes drift2 { to { transform: translate(-30px, -40px); } }
 
-h1,h2{
-font-family:"Source Serif 4",serif;
-letter-spacing:-0.02em;
-}
+    /* ── Layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px 80px;
+    }
 
-/* layout */
+    /* ── Nav ── */
+    nav {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 0 0;
+    }
 
-.container{
-max-width:var(--max);
-margin:auto;
-padding:0 28px;
-}
+    .wordmark {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--text-1);
+      letter-spacing: 0.02em;
+    }
 
-/* ---------------- HERO ---------------- */
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-.hero{
-padding:80px 0 60px;
-text-align:center;
-}
+    /* ── Hero ── */
+    .hero {
+      width: 100%;
+      max-width: 680px;
+      padding-top: 72px;
+      padding-bottom: 56px;
+    }
 
-.hero h1{
-font-size:2.4rem;
-max-width:650px;
-margin:auto;
-margin-bottom:18px;
-}
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--warm);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--warm);
+      opacity: 0.6;
+    }
 
-.subtitle{
-display:inline-block;
-border:1px solid var(--border);
-background:white;
-padding:10px 18px;
-border-radius:8px;
-font-size:.9rem;
-color:var(--muted);
-}
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 8vw, 58px);
+      line-height: 1.08;
+      color: var(--text-1);
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
 
-.hero-layout{
-display:grid;
-grid-template-columns:1fr 280px;
-gap:60px;
-margin-top:50px;
-align-items:center;
-}
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
 
-/* problems */
+    .sub {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 48px;
+    }
 
-.problem-section{
-text-align:left;
-}
+    /* ── Email form ── */
+    .form-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 420px;
+    }
 
-.problem-section h3{
-font-size:1.2rem;
-margin-bottom:18px;
-}
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
 
-.problem{
-border:1px solid var(--border);
-background:white;
-padding:18px;
-border-radius:10px;
-margin-bottom:12px;
-}
+    input[type="email"] {
+      flex: 1;
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text-1);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="email"]::placeholder { color: var(--text-3); }
+    input[type="email"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(107,140,255,0.12);
+    }
 
-.problem strong{
-font-size:.9rem;
-display:block;
-margin-bottom:4px;
-}
+    button[type="submit"] {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(107,140,255,0.3);
+    }
+    button[type="submit"]:hover {
+      background: #7d9dff;
+      box-shadow: 0 6px 28px rgba(107,140,255,0.4);
+    }
+    button[type="submit"]:active { transform: scale(0.97); }
 
-.problem p{
-font-size:.85rem;
-color:var(--muted);
-}
+    .form-note {
+      font-size: 11px;
+      color: var(--text-3);
+      line-height: 1.5;
+    }
 
-/* phone */
+    .success-msg {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(107,140,255,0.08);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--accent);
+    }
+    .success-msg.visible { display: flex; }
 
-.phone{
-border-radius:30px;
-overflow:hidden;
-border:6px solid var(--navy);
-box-shadow:0 20px 40px rgba(0,0,0,.15);
-}
+    /* ── Phone mockup ── */
+    .mockup-section {
+      width: 100%;
+      max-width: 680px;
+      margin: 16px 0 64px;
+      display: flex;
+      justify-content: center;
+    }
 
-.phone img{
-width:100%;
-display:block;
-}
+    .phone {
+      width: 220px;
+      height: 440px;
+      background: var(--navy-card);
+      border-radius: 36px;
+      border: 1px solid var(--border);
+      position: relative;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,255,255,0.04) inset,
+        0 20px 40px rgba(107,140,255,0.08);
+      overflow: hidden;
+      animation: float 6s ease-in-out infinite;
+    }
 
-/* CTA */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
 
-.cta{
-margin-top:18px;
-display:inline-block;
-background:var(--accent);
-color:white;
-padding:12px 28px;
-border-radius:8px;
-font-weight:600;
-text-decoration:none;
-box-shadow:0 8px 20px rgba(103,103,250,.35);
-}
+    /* Phone notch */
+    .phone::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 6px;
+      background: var(--navy-mid);
+      border-radius: 3px;
+      z-index: 2;
+    }
 
-/* ---------------- FEATURES ---------------- */
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      padding: 28px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-.features{
-padding:90px 0;
-text-align:center;
-}
+    .phone-header {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: var(--text-1);
+      padding-top: 8px;
+    }
 
-.features h2{
-margin-bottom:60px;
-font-size:1.6rem;
-}
+    .phone-label {
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--text-3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
 
-.feature-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:40px;
-}
+    .phone-card {
+      background: var(--navy-mid);
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
 
-.feature{
-text-align:left;
-}
+    .phone-cover {
+      width: 52px;
+      height: 76px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #2a3f5f, #1a2d45);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
 
-.feature-phone{
-border-radius:22px;
-overflow:hidden;
-border:5px solid var(--navy);
-margin-bottom:12px;
-}
+    .phone-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .phone-title { font-size: 9px; font-weight: 600; color: var(--text-1); }
+    .phone-author { font-size: 8px; color: var(--text-3); }
 
-.feature-phone img{
-width:100%;
-}
+    .phone-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(107,140,255,0.12);
+      border-radius: 4px;
+      padding: 2px 5px;
+      font-size: 7px;
+      color: var(--accent);
+    }
 
-.feature h3{
-font-size:.9rem;
-margin-bottom:6px;
-}
+    .phone-bar-wrap {
+      margin-top: 2px;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .phone-bar-fill {
+      height: 100%;
+      width: 34%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
 
-.feature p{
-font-size:.82rem;
-color:var(--muted);
-}
+    .phone-session {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+    .phone-chip {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: var(--navy-mid);
+      border-radius: 5px;
+      padding: 3px 6px;
+      font-size: 7px;
+      color: var(--text-3);
+    }
 
-/* ---------------- DEVELOPER NOTE ---------------- */
+    .phone-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.05);
+      margin: 0 -2px;
+    }
 
-.dev-note{
-background:white;
-border-top:1px solid var(--border);
-padding:80px 0;
-}
+    .phone-lib-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
 
-.dev-note h2{
-text-align:center;
-margin-bottom:30px;
-}
+    .phone-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
 
-.dev-body{
-max-width:620px;
-margin:auto;
-color:var(--muted);
-font-size:.92rem;
-line-height:1.8;
-}
+    .phone-thumb {
+      aspect-ratio: 2/3;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #2a3f5f, #1a2d45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
 
-/* ---------------- FOOTER CTA ---------------- */
+    /* ── Features ── */
+    .features {
+      width: 100%;
+      max-width: 680px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 64px;
+    }
 
-.footer{
-background:var(--navy);
-color:white;
-padding:90px 0;
-text-align:center;
-}
+    .feature {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature:hover {
+      border-color: rgba(107,140,255,0.35);
+      transform: translateY(-2px);
+    }
 
-.footer h2{
-font-size:2rem;
-margin-bottom:14px;
-}
+    .feature-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+      display: block;
+    }
 
-.footer p{
-color:rgba(255,255,255,.6);
-margin-bottom:36px;
-}
+    .feature-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-1);
+      margin-bottom: 4px;
+    }
 
-.form{
-max-width:420px;
-margin:auto;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
+    .feature-desc {
+      font-size: 12px;
+      color: var(--text-3);
+      line-height: 1.6;
+    }
 
-.form input,
-.form textarea{
-padding:14px;
-border-radius:8px;
-border:none;
-background:rgba(255,255,255,.1);
-color:white;
-font-size:.9rem;
-}
+    /* ── Platform note ── */
+    .platform-note {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 64px;
+    }
 
-.form textarea{
-height:110px;
-resize:none;
-}
+    .platform-note span { font-size: 16px; }
+    .platform-note p { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .platform-note strong { color: var(--text-1); }
 
-.form button{
-background:var(--accent);
-border:none;
-padding:14px;
-border-radius:8px;
-color:white;
-font-weight:600;
-cursor:pointer;
-}
+    /* ── Footer ── */
+    footer {
+      width: 100%;
+      max-width: 680px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-/* ---------------- MOBILE ---------------- */
+    .footer-wordmark {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: var(--text-3);
+    }
 
-@media (max-width:900px){
+    .footer-note {
+      font-size: 12px;
+      color: var(--text-3);
+    }
 
-.hero-layout{
-grid-template-columns:1fr;
-}
+    /* ── Entrance animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.feature-grid{
-grid-template-columns:repeat(2,1fr);
-}
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.35s; }
+    .delay-4 { animation-delay: 0.5s; }
+    .delay-5 { animation-delay: 0.65s; }
+    .delay-6 { animation-delay: 0.8s; }
 
-}
-
-@media (max-width:520px){
-
-.hero h1{
-font-size:1.8rem;
-}
-
-.feature-grid{
-grid-template-columns:1fr;
-}
-
-}
-
-</style>
+    @media (max-width: 480px) {
+      .input-row { flex-direction: column; }
+      button[type="submit"] { width: 100%; }
+      .features { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- HERO -->
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
 
-<section class="hero">
-<div class="container">
+<div class="page">
 
-<h1>I'm building the tool I wish I had and I'd love your help to get it right.</h1>
+  <!-- Nav -->
+  <nav class="fade-up">
+    <span class="wordmark">Trace</span>
+    <span class="badge">Coming Soon</span>
+  </nav>
 
-<div class="subtitle">
-A simple, privacy-first way to reclaim your focus. No ads, no tracking, just utility.
-</div>
+  <!-- Hero -->
+  <div class="hero">
+    <p class="eyebrow fade-up delay-1">Reading accountability</p>
+    <h1 class="fade-up delay-2">
+      Read more.<br/>
+      <em>No excuses.</em>
+    </h1>
+    <p class="sub fade-up delay-3">
+      Trace keeps you honest about your reading — real sessions, real pages, real progress. 
+      Your data stays on your device. No account. No subscription. No cloud.
+    </p>
 
-<div class="hero-layout">
+    <div class="form-wrap fade-up delay-4">
+      <div class="input-row">
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
+        <button type="submit" onclick="handleSubmit()">Notify me</button>
+      </div>
+      <div class="success-msg" id="success-msg">
+        <span>✓</span> You're on the list. We'll reach out when Trace launches.
+      </div>
+      <p class="form-note">Android launching first. iOS to follow. No spam, ever.</p>
+    </div>
+  </div>
 
-<div class="problem-section">
+  <!-- Phone mockup -->
+  <div class="mockup-section fade-up delay-5">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-header">Welcome</div>
+        <div class="phone-label">Continue Reading</div>
 
-<h3>The Modern Reading Struggle</h3>
+        <div class="phone-card">
+          <div class="phone-cover">📖</div>
+          <div class="phone-info">
+            <div class="phone-title">Atomic Habits</div>
+            <div class="phone-author">James Clear</div>
+            <div class="phone-pill">☀️ joyful</div>
+            <div style="font-size:7px;color:#4d6180;margin-top:2px;">Current page: <strong style="color:#8fa3c8;">101</strong></div>
+            <div class="phone-bar-wrap"><div class="phone-bar-fill"></div></div>
+          </div>
+        </div>
 
-<div class="problem">
-<strong>01. The Distraction Loop</strong>
-<p>Modern apps are designed to keep you scrolling, not reading.</p>
-</div>
+        <div class="phone-session">
+          <div style="font-size:7px;font-weight:600;color:#4d6180;">Last Session</div>
+          <div class="phone-chip">📅 Today</div>
+          <div class="phone-chip">⏱ 32 min</div>
+        </div>
 
-<div class="problem">
-<strong>02. The Progress Void</strong>
-<p>It's hard to stay motivated when you can't see how far you've come.</p>
-</div>
+        <div class="phone-divider"></div>
 
-<div class="problem">
-<strong>03. The Feature Bloat</strong>
-<p>Most trackers are cluttered with social feeds and notifications.</p>
-</div>
+        <div class="phone-lib-label">Library</div>
+        <div class="phone-grid">
+          <div class="phone-thumb">📚</div>
+          <div class="phone-thumb">🗡️</div>
+          <div class="phone-thumb">🧠</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<a class="cta" href="#join">Join the Inner Circle</a>
+  <!-- Features -->
+  <div class="features fade-up delay-6">
+    <div class="feature">
+      <span class="feature-icon">🔒</span>
+      <div class="feature-title">Fully local</div>
+      <div class="feature-desc">Your reading data never leaves your phone. No servers, no sync.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📖</span>
+      <div class="feature-title">Session logging</div>
+      <div class="feature-desc">Log pages read, time spent, and how each session felt.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📊</span>
+      <div class="feature-title">Real progress</div>
+      <div class="feature-desc">Track multiple books at once with honest, visible progress.</div>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🎯</span>
+      <div class="feature-title">Accountability</div>
+      <div class="feature-desc">Set deadlines. Get nudged. Stay honest with yourself.</div>
+    </div>
+  </div>
 
-</div>
+  <!-- Platform note -->
+  <div class="platform-note fade-up">
+    <span>🤖</span>
+    <p><strong>Android first.</strong> Trace launches on Android. iOS support is planned based on interest from this waitlist.</p>
+  </div>
 
-<div class="phone">
-<img src="hero.png">
-</div>
-
-</div>
-</div>
-</section>
-
-
-<!-- FEATURES -->
-
-<section class="features">
-<div class="container">
-
-<h2>Built around how you actually read</h2>
-
-<div class="feature-grid">
-
-<div class="feature">
-<div class="feature-phone"><img src="continue-reading.png"></div>
-<h3>Pick up exactly where you left off</h3>
-<p>Your library shows every active book with real progress.</p>
-</div>
-
-<div class="feature">
-<div class="feature-phone"><img src="focus.png"></div>
-<h3>Sessions that hold you accountable</h3>
-<p>A distraction-free timer that keeps you focused.</p>
-</div>
-
-<div class="feature">
-<div class="feature-phone"><img src="log-page.png"></div>
-<h3>Log what mattered</h3>
-<p>Record pages, notes, and reflections after each session.</p>
-</div>
-
-<div class="feature">
-<div class="feature-phone"><img src="insight.png"></div>
-<h3>See your reading life clearly</h3>
-<p>Streaks, pace, and insights from your real reading behaviour.</p>
-</div>
-
-</div>
-</div>
-</section>
-
-
-<!-- DEVELOPER NOTE -->
-
-<section class="dev-note">
-
-<div class="container">
-
-<h2>A note from the developer</h2>
-
-<div class="dev-body">
-<p>
-I'm a reader who decided to build the tool I couldn't find.
-I was tired of reading apps that felt like digital chores or
-social networks designed to sell my data.
-</p>
-
-<p>
-Trace is my attempt at creating a quiet,
-intentional space that respects the act of reading.
-</p>
-
-</div>
-
-</div>
-</section>
-
-
-<!-- FOOTER -->
-
-<section class="footer" id="join">
-
-<div class="container">
-
-<h2>Help me build this.</h2>
-
-<p>I'm looking for a small group of early testers to help shape the roadmap.</p>
-
-<form class="form">
-
-<input type="email" placeholder="Your email address">
-
-<textarea placeholder="What's your biggest reading challenge right now?"></textarea>
-
-<button>Send My Feedback</button>
-
-</form>
+  <!-- Footer -->
+  <footer>
+    <span class="footer-wordmark">Trace</span>
+    <span class="footer-note">© 2026 · Built independently · No tracking</span>
+  </footer>
 
 </div>
 
-</section>
+<script>
+  function handleSubmit() {
+    const input = document.getElementById('email-input');
+    const success = document.getElementById('success-msg');
+    const val = input.value.trim();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+
+    if (!valid) {
+      input.style.borderColor = '#ef4444';
+      input.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.12)';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.style.boxShadow = '';
+      }, 1400);
+      return;
+    }
+
+    input.closest('.input-row').style.display = 'none';
+    success.classList.add('visible');
+
+    // TODO: wire up your email capture backend here
+    console.log('Email captured:', val);
+  }
+
+  document.getElementById('email-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSubmit();
+  });
+</script>
 
 </body>
 </html>
