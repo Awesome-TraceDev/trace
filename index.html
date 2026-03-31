@@ -625,9 +625,13 @@
 </div>
 
 <script>
-  function handleSubmit() {
+  const SUPABASE_URL = 'https://loebymrxqaemtjdcakwd.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvZWJ5bXJ4cWFlbXRqZGNha3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NDU0MjAsImV4cCI6MjA4NTAyMTQyMH0.v1zboIxaFlDNjzU9birVGG8eXJ6JJJtHEdh60dWwGMs';
+
+  async function handleSubmit() {
     const input = document.getElementById('email-input');
     const success = document.getElementById('success-msg');
+    const btn = document.querySelector('button[type="submit"]');
     const val = input.value.trim();
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
@@ -641,11 +645,48 @@
       return;
     }
 
-    input.closest('.input-row').style.display = 'none';
-    success.classList.add('visible');
+    // Loading state
+    btn.textContent = 'Saving…';
+    btn.disabled = true;
+    input.disabled = true;
 
-    // TODO: wire up your email capture backend here
-    console.log('Email captured:', val);
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ email: val })
+      });
+
+      if (res.ok) {
+        input.closest('.input-row').style.display = 'none';
+        success.classList.add('visible');
+      } else {
+        const err = await res.json();
+        // Duplicate email — treat as success so user isn't confused
+        if (err.code === '23505') {
+          input.closest('.input-row').style.display = 'none';
+          success.classList.add('visible');
+        } else {
+          throw new Error(err.message);
+        }
+      }
+    } catch (e) {
+      btn.textContent = 'Notify me';
+      btn.disabled = false;
+      input.disabled = false;
+      input.style.borderColor = '#ef4444';
+      input.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.12)';
+      setTimeout(() => {
+        input.style.borderColor = '';
+        input.style.boxShadow = '';
+      }, 2000);
+      console.error('Supabase error:', e);
+    }
   }
 
   document.getElementById('email-input').addEventListener('keydown', e => {
